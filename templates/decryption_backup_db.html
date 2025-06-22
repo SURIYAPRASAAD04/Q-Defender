@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/icon.png') }}">
+    <title>Q-Defender | Decryption</title>
+    <style>
+        :root {
+            --primary-green: #00E58E;
+            --secondary-teal: #007173;
+            --dark-teal: #003135;
+            --alert-red: #FF4D4D;
+            --neon-blue: #00F0FF;
+            --dark-bg: #001A1C;
+            --light-bg: #00282A;
+            --panel-bg: rgba(0, 40, 42, 0.7);
+        }
+
+        @font-face {
+            font-family: 'Quantum';
+            src: url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Orbitron', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: radial-gradient(ellipse at center, var(--dark-teal) 0%, #000000 100%);
+            color: white;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* Vertical Navigation */
+        .side-nav {
+            width: 80px;
+            background-color: var(--dark-teal);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px 0;
+            border-right: 1px solid rgba(0, 229, 142, 0.1);
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            z-index: 100;
+        }
+
+        .nav-icon {
+            width: 100%;
+            padding: 20px 0;
+            text-align: center;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .nav-icon i {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.6);
+            transition: all 0.3s;
+        }
+
+        .nav-icon.active i {
+            color: var(--primary-green);
+        }
+
+        .nav-icon:hover i {
+            color: var(--primary-green);
+        }
+
+        .nav-icon::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: var(--primary-green);
+            transform: scaleY(0);
+            transition: transform 0.3s;
+        }
+
+        .nav-icon.active::after,
+        .nav-icon:hover::after {
+            transform: scaleY(1);
+        }
+
+        .nav-tooltip {
+            position: absolute;
+            left: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--dark-teal);
+            padding: 8px 15px;
+            border-radius: 0 5px 5px 0;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s;
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-icon:hover .nav-tooltip {
+            opacity: 1;
+            left: 110%;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 15px 30px;
+            background-color: var(--dark-teal);
+            border-bottom: 1px solid rgba(0, 229, 142, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(5px);
+        }
+
+        .logo-container {
+            margin-right: auto;
+            padding-left: 20px;
+        }
+
+        .top-logo {
+            height: 30px;
+            filter: drop-shadow(0 0 5px rgba(0, 229, 142, 0.5));
+            transition: all 0.3s;
+        }
+
+        .top-logo:hover {
+            filter: drop-shadow(0 0 10px rgba(0, 229, 142, 0.8));
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .user-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-green);
+            margin-left: 15px;
+        }
+
+        .user-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: var(--panel-bg);
+            border-radius: 5px;
+            padding: 10px 0;
+            min-width: 150px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s;
+            border: 1px solid rgba(0, 229, 142, 0.1);
+            backdrop-filter: blur(5px);
+        }
+
+        .user-profile:hover .user-menu {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .user-menu-item {
+            padding: 8px 15px;
+            transition: all 0.3s;
+        }
+
+        .user-menu-item:hover {
+            background: rgba(0, 229, 142, 0.1);
+            color: var(--primary-green);
+        }
+
+        /* Main Content Container */
+        .main-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Content Wrapper */
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+            flex: 1;
+        }
+
+        /* Home Button Styles */
+        .home-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 49, 53, 0.7);
+            border: 1px solid var(--primary-green);
+            color: var(--primary-green);
+            padding: 8px 15px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            z-index: 100;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .home-button:hover {
+            background: var(--primary-green);
+            color: var(--dark-teal);
+            transform: translateY(-2px);
+            box-shadow: 0 2px 10px rgba(0, 229, 142, 0.5);
+        }
+
+        .home-button i {
+            font-size: 1rem;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            width: 100%;
+          
+        }
+
+        @media (min-width: 992px) {
+            .main-content {
+                flex-direction: row;
+            }
+        }
+
+        .particle-bg {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.15;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            background: var(--primary-green);
+            border-radius: 50%;
+            filter: blur(1px);
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) translateX(0) scale(0.5); opacity: 0; }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.8; }
+            100% { transform: translateY(-100vh) translateX(20vw) scale(1.2); opacity: 0; }
+        }
+
+        .decryption-visualization {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 20px;
+            z-index: 2;
+            flex: 1;
+        }
+
+        .circle-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            aspect-ratio: 1/1;
+            margin: 20px auto;
+        }
+
+        .decryption-layer {
+            position: absolute;
+            border-radius: 50%;
+            border: 2px solid;
+            transform: scale(1);
+            transition: transform 1s cubic-bezier(0.68, -0.55, 0.265, 1.55), 
+                        opacity 0.8s ease,
+                        box-shadow 0.5s ease;
+            opacity: 0.95;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            filter: brightness(1);
+            will-change: transform, box-shadow;
+            left: 50%;
+            top: 50%;
+            transform-origin: center;
+            box-shadow: 0 0 30px;
+        }
+
+        .decryption-layer::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: radial-gradient(circle at center, 
+                      rgba(255,255,255,0.15) 0%, 
+                      rgba(255,255,255,0) 70%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .decryption-layer:hover::before {
+            opacity: 1;
+        }
+
+        .decryption-layer.completed {
+            opacity: 0;
+            transform: scale(0);
+            box-shadow: 0 0 0;
+        }
+
+        .decryption-layer.final-active {
+            animation: quantumPulse 1.5s infinite alternate;
+        }
+
+        @keyframes quantumPulse {
+            0% { transform: scale(1); box-shadow: 0 0 20px; }
+            100% { transform: scale(1.05); box-shadow: 0 0 40px; }
+        }
+
+        .layer-label {
+            font-weight: bold;
+            font-size: clamp(0.9rem, 3vw, 1.5rem);
+            text-shadow: 0 0 8px rgba(0,0,0,0.8);
+            pointer-events: none;
+            background-color: #003135;
+            border-radius: 7px;
+            width: 150px;
+            color: rgb(225, 225, 225);
+            text-align: center;
+            padding: 0 10px;
+        }
+
+        /* Layer specific styles */
+        .kyber {
+            width: 30%;
+            height: 30%;
+            background: rgba(0, 229, 142, 0.15);
+            border-color: var(--primary-green);
+            box-shadow: 0 0 30px var(--primary-green);
+            margin-left: -15%;
+            margin-top: -15%;
+        }
+
+        .bike {
+            width: 45%;
+            height: 45%;
+            background: rgba(0, 113, 115, 0.15);
+            border-color: var(--secondary-teal);
+            box-shadow: 0 0 30px var(--secondary-teal);
+            margin-left: -22.5%;
+            margin-top: -22.5%;
+        }
+
+        .falcon {
+            width: 60%;
+            height: 60%;
+            background: rgba(0, 49, 53, 0.2);
+            border-color: var(--dark-teal);
+            box-shadow: 0 0 30px var(--dark-teal);
+            margin-left: -30%;
+            margin-top: -30%;
+        }
+
+        .ntru {
+            width: 75%;
+            height: 75%;
+            background: rgba(0, 113, 115, 0.15);
+            border-color: var(--secondary-teal);
+            box-shadow: 0 0 30px var(--secondary-teal);
+            margin-left: -37.5%;
+            margin-top: -37.5%;
+        }
+
+        .dilithium {
+            width: 90%;
+            height: 90%;
+            background: rgba(255, 77, 77, 0.15);
+            border-color: var(--alert-red);
+            box-shadow: 0 0 30px var(--alert-red);
+            margin-left: -45%;
+            margin-top: -45%;
+            display: none;
+        }
+
+        /* Success banner */
+        .success-banner {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: rgba(0, 49, 53, 0.95);
+            border: 1px solid var(--primary-green);
+            border-radius: 8px;
+            padding: 15px 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(0, 229, 142, 0.3);
+            z-index: 1000;
+            opacity: 0;
+            transition: all 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.4);
+            backdrop-filter: blur(5px);
+            width: 90%;
+            max-width: 500px;
+        }
+
+        .success-banner.visible {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .success-message {
+            margin-right: 15px;
+            margin-bottom: 10px;
+            color: white;
+            font-size: clamp(2rem,1.2rem);
+            text-align: center;
+            width: 100%;
+        }
+
+        .banner-buttons {
+            display: flex;
+            gap: 10px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .close-btn, .download-btn {
+            color: var(--primary-green);
+            border: none;
+            border-radius: 4px;
+            padding: 8px 15px;
+            background: #00000000;
+            cursor: pointer;
+            font-weight: bold;
+            font-family: 'Orbitron', sans-serif;
+            transition: all 0.3s ease;
+            font-size: clamp(0.8rem, 2.5vw, 1rem);
+            border: 1px solid var(--primary-green);
+        }
+
+        .download-btn {
+            background: rgba(0, 229, 142, 0.1);
+        }
+
+        .close-btn:hover, .download-btn:hover {
+            transform: translateY(-2px);
+            background: var(--primary-green);
+            color: var(--dark-teal);
+        }
+
+        /* ML Status Panel */
+        .ml-status {
+            background: rgba(0, 49, 53, 0.8);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px auto;
+            width: 100%;
+            max-width: 550px;
+            border: 1px solid rgba(0, 229, 142, 0.2);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.8s ease 0.5s;
+            backdrop-filter: blur(5px);
+        }
+
+        .ml-status.visible {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .ml-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 229, 142, 0.3);
+            padding-bottom: 8px;
+        }
+
+        .ml-title {
+            font-weight: bold;
+            color: var(--primary-green);
+            font-size: clamp(1rem, 3vw, 1.3rem);
+            margin-bottom: 5px;
+        }
+
+        .ml-confidence {
+            font-family: monospace;
+            color: var(--primary-green);
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+        }
+
+        .ml-progress {
+            height: 8px;
+            background: rgba(0, 113, 115, 0.3);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 12px;
+            box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .ml-progress-bar {
+            height: 100%;
+            width: 0;
+            background: linear-gradient(90deg, 
+                var(--primary-green), 
+                var(--secondary-teal));
+            transition: width 0.7s cubic-bezier(0.65, 0, 0.35, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ml-progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg,
+                rgba(255,255,255,0) 0%,
+                rgba(255,255,255,0.3) 50%,
+                rgba(255,255,255,0) 100%);
+            animation: shine 2s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .ml-metrics {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .ml-metric {
+            text-align: center;
+            flex: 1 1 100px;
+            font-size: clamp(0.7rem, 2vw, 0.9rem);
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .ml-metric span {
+            display: block;
+            font-weight: bold;
+            color: var(--primary-green);
+            font-size: clamp(0.8rem, 2.5vw, 1.1rem);
+            margin-top: 3px;
+        }
+
+        /* Timeline panel */
+        .timeline-panel {
+            width: 100%;
+            max-width: 100%;
+            background: rgba(0, 49, 53, 0.8);
+            border-top: 1px solid rgba(0, 229, 142, 0.3);
+            padding: 20px;
+            overflow-y: auto;
+            backdrop-filter: blur(5px);
+            transform: translateX(0);
+            opacity: 0;
+            transition: all 0.8s ease 0.3s;
+            max-height: 40vh;
+        }
+
+        @media (min-width: 992px) {
+            .timeline-panel {
+                width: 35%;
+                max-height: none;
+                border-top: none;
+                border-left: 1px solid rgba(0, 229, 142, 0.3);
+            }
+        }
+
+        .timeline-panel.visible {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .timeline-panel h2 {
+            font-size: clamp(1.2rem, 3.5vw, 1.8rem);
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: var(--primary-green);
+            text-shadow: 0 0 8px rgba(0, 229, 142, 0.3);
+            border-bottom: 1px solid rgba(0, 229, 142, 0.3);
+            padding-bottom: 8px;
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 100%;
+            background: linear-gradient(90deg, 
+                var(--primary-green) 0%, 
+                var(--secondary-teal) 50%, 
+                var(--dark-teal) 100%);
+            transition: width 0.7s cubic-bezier(0.65, 0, 0.35, 1);
+            position: relative;
+        }
+
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg,
+                rgba(255,255,255,0) 0%,
+                rgba(255,255,255,0.3) 50%,
+                rgba(255,255,255,0) 100%);
+            animation: shine 2s infinite;
+        }
+
+        .timeline-items {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .timeline-card {
+            background: rgba(0, 113, 115, 0.25);
+            border-left: 3px solid;
+            padding: 12px;
+            border-radius: 0 6px 6px 0;
+            transform: translateX(-20px);
+            opacity: 0;
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(3px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .timeline-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg,
+                rgba(0,229,142,0.1) 0%,
+                rgba(0,229,142,0) 100%);
+            z-index: -1;
+        }
+
+        .timeline-card.visible {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .timeline-card.kyber-card {
+            border-left-color: var(--primary-green);
+        }
+
+        .timeline-card.bike-card {
+            border-left-color: var(--secondary-teal);
+        }
+
+        .timeline-card.falcon-card {
+            border-left-color: var(--dark-teal);
+        }
+
+        .timeline-card.ntru-card {
+            border-left-color: var(--secondary-teal);
+        }
+
+        .timeline-card.dilithium-card {
+            border-left-color: var(--alert-red);
+        }
+
+        .card-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-title {
+            font-weight: bold;
+            font-size: clamp(0.9rem, 2.8vw, 1.1rem);
+            color: white;
+        }
+
+        .card-time {
+            font-family: monospace;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: clamp(0.7rem, 2.2vw, 0.8rem);
+        }
+
+        .card-desc {
+            font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+            color: rgba(255, 255, 255, 0.85);
+            line-height: 1.4;
+        }
+
+        /* Connection lines */
+        .connection-line {
+            position: relative;
+            height: 15px;
+            margin-left: 15px;
+        }
+
+        .connection-line::before {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 0;
+            width: 2px;
+            height: 100%;
+            background: rgba(0, 229, 142, 0.3);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .side-nav {
+                width: 60px;
+                padding: 20px 0;
+            }
+            .nav-icon i {
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            body {
+                flex-direction: column;
+            }
+            .side-nav {
+                width: 100%;
+                flex-direction: row;
+                justify-content: space-around;
+                padding: 10px 0;
+                height: auto;
+            }
+            .nav-tooltip {
+                display: none;
+            }
+            .main-container {
+                padding-top: 60px;
+            }
+        }
+    </style>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Vertical Navigation -->
+    <nav class="side-nav">
+        <div class="nav-icon">
+            <a style="text-decoration: none; color: white;" href="/">
+                <i class="fas fa-lock"></i>
+            </a>
+            <span class="nav-tooltip">Secure Data</span>
+        </div>
+        <div class="nav-icon">
+            <a style="text-decoration: none; color: white;" href="/managedata">
+            <i class="fas fa-database"></i></a>
+            <span class="nav-tooltip">Manage Data</span>
+        </div>
+        <div class="nav-icon active">
+            <i class="fas fa-shield-alt"></i>
+            <span class="nav-tooltip">Security</span>
+        </div>
+        <div class="nav-icon">
+            <a style="text-decoration: none; color: white;" href="/account_settings">
+            <i class="fas fa-cog"></i></a>
+            <span class="nav-tooltip">Settings</span>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <div class="main-container">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="logo-container">
+                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Q-Defender Logo" class="top-logo">
+            </div>
+            <div class="user-profile">
+                {% if picture %}
+                    <img src="{{ picture }}" alt="User" class="user-img">
+                {% else %}
+                    <img src="{{ url_for('static', filename='img/default-user.png') }}" alt="User" class="user-img">
+                {% endif %}
+                <div class="user-menu">
+                    <a style="color: white; text-decoration: none;" href="/my_profile">
+                    <div class="user-menu-item">My Profile</div></a>
+
+                    <a style="color: white; text-decoration: none;" href="/account_settings"><div class="user-menu-item">Account Settings</div></a>
+                    <a style="color: white; text-decoration: none;" href="/logout"><div class="user-menu-item">Logout</div></a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Wrapper -->
+        <div class="content-wrapper">
+            <div class="particle-bg" id="particleBg"></div>
+            
+            <div class="container">
+                
+                
+                <div class="main-content">
+                    <div class="decryption-visualization">
+                        <div class="circle-container">
+                            <div class="decryption-layer kyber" data-algorithm="Kyber">
+                                <span class="layer-label">Kyber</span>
+                            </div>
+                            <div class="decryption-layer bike" data-algorithm="BIKE">
+                                <span class="layer-label">McEliece</span>
+                            </div>
+                            <div class="decryption-layer falcon" data-algorithm="Falcon">
+                                <span class="layer-label">Falcon</span>
+                            </div>
+                            <div class="decryption-layer ntru" data-algorithm="NTRU">
+                                <span class="layer-label">NTRU</span>
+                            </div>
+                            <div class="decryption-layer dilithium" data-algorithm="Dilithium">
+                                <span class="layer-label">Dilithium</span>
+                            </div>
+                        </div>
+                        
+                        <div class="ml-status">
+                            <div class="ml-header">
+                                <div class="ml-title">Integrity Verification</div>
+                                <div class="ml-confidence">Confidence: <span id="mlConfidence">0%</span></div>
+                            </div>
+                            <div class="ml-progress">
+                                <div class="ml-progress-bar" id="mlProgressBar"></div>
+                            </div>
+                            <div class="ml-metrics">
+                                <div class="ml-metric">Precision <span>98.2%</span></div>
+                                <div class="ml-metric">Recall <span>96.7%</span></div>
+                                <div class="ml-metric">F1 Score <span>97.4%</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-panel">
+                        <h2>KEY DECAPSULATION</h2>
+                        <div class="progress-container">
+                            <div class="progress-bar" id="progressBar"></div>
+                        </div>
+                        
+                        <div class="timeline-items" id="timelineItems">
+                            <!-- Timeline cards will be added here dynamically -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="success-banner" id="successBanner">
+                    <div class="success-message">Your data is successfully decrypted and verified!</div>
+                    <div class="banner-buttons">
+                        <form action="{{ url_for('download_decoded') }}">
+                            <button class="download-btn" id="downloadBtn" type="submit"><i class="fas fa-download"></i> Download</button>
+                            
+                        </form>
+                        <button class="close-btn" id="closeBtn"><i class="fas fa-times"></i> Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create floating particles
+            const particleBg = document.getElementById('particleBg');
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.width = `${Math.random() * 4 + 2}px`;
+                particle.style.height = particle.style.width;
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100 + 100}%`;
+                particle.style.animationDelay = `${Math.random() * 15}s`;
+                particle.style.animationDuration = `${Math.random() * 10 + 10}s`;
+                particle.style.opacity = Math.random() * 0.5 + 0.1;
+                particleBg.appendChild(particle);
+            }
+
+            // Decryption layers elements
+            const layers = [
+                { element: document.querySelector('.dilithium'), name: 'Dilithium', duration: 200, delay: 200 },
+                { element: document.querySelector('.ntru'), name: 'NTRU', duration: 200, delay: 200 },
+                { element: document.querySelector('.falcon'), name: 'Falcon', duration: 200, delay: 200 },
+                { element: document.querySelector('.bike'), name: 'Classic McEliece', duration: 200, delay: 200 },
+                { element: document.querySelector('.kyber'), name: 'Kyber', duration: 200, delay: 200 }
+            ];
+
+            // UI elements
+            const progressBar = document.getElementById('progressBar');
+            const timelineItems = document.getElementById('timelineItems');
+            const successBanner = document.getElementById('successBanner');
+            const closeBtn = document.getElementById('closeBtn');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const mlProgressBar = document.getElementById('mlProgressBar');
+            const mlConfidence = document.getElementById('mlConfidence');
+            const mlStatus = document.querySelector('.ml-status');
+            const timelinePanel = document.querySelector('.timeline-panel');
+
+            // Show UI elements with delay
+            setTimeout(() => {
+                mlStatus.classList.add('visible');
+                timelinePanel.classList.add('visible');
+            }, 300);
+
+            // Close button event
+            closeBtn.addEventListener('click', function() {
+                successBanner.classList.remove('visible');
+            });
+
+            // Download button event
+            downloadBtn.addEventListener('click', function() {
+                // Here you would typically implement the download functionality
+                // For demonstration, we'll just show an alert
+                alert('Download functionality would be implemented here. This would download the decrypted data.');
+            });
+
+            // Start decryption process
+            function startDecryptionProcess() {
+                let totalDuration = 0;
+                let completedLayers = 0;
+                
+                // Start with all layers visible (since we're decrypting)
+                layers.forEach(layer => {
+                    if (layer.element) {
+                        layer.element.style.display = 'flex';
+                        layer.element.classList.add('active');
+                    }
+                });
+                
+                // Start ML verification
+                simulateMLAnalysis();
+                
+                // Process layers in reverse order (Dilithium first if present, then NTRU, Falcon, BIKE, Kyber)
+                const layersToProcess = layers.filter(layer => layer.name !== 'Dilithium' || 
+                    (layer.name === 'Dilithium')); 
+                
+                // Start progress bar at 100%
+                progressBar.style.width = '100%';
+                
+                layersToProcess.forEach((layer, index) => {
+                    totalDuration += layer.delay;
+                    
+                    setTimeout(() => {
+                        // Add to timeline first
+                        addTimelineCard(layer.name, getAlgorithmDescription(layer.name, true));
+                        
+                        // Then remove layer after duration
+                        setTimeout(() => {
+                            if (layer.element) {
+                                layer.element.classList.add('completed');
+                                completedLayers++;
+                                
+                                // Update progress bar with smooth animation (counting down)
+                                progressBar.style.width = `${100 - (completedLayers / layersToProcess.length) * 100}%`;
+                                
+                                // If this was the last layer
+                                if (completedLayers === layersToProcess.length) {
+                                    // Show success banner with bounce effect
+                                    setTimeout(() => {
+                                        successBanner.classList.add('visible');
+                                        // Add special animation to Kyber layer (last to be removed)
+                                        if (layer.element) {
+                                            layer.element.classList.add('final-active');
+                                        }
+                                    }, 500);
+                                }
+                            }
+                        }, layer.duration);
+                    }, totalDuration);
+                    
+                    totalDuration += layer.duration;
+                });
+            }
+            
+            function simulateMLAnalysis() {
+                let progress = 0;
+                const interval = setInterval(() => {
+                    progress += Math.random() * 8 + 2;
+                    if (progress > 100) progress = 100;
+                    
+                    mlProgressBar.style.width = `${progress}%`;
+                    mlConfidence.textContent = `${Math.floor(progress)}%`;
+                    
+                    // Change color when confidence is high
+                    if (progress > 70) {
+                        mlConfidence.style.color = 'var(--primary-green)';
+                    }
+                    
+                    if (progress >= 100) {
+                        clearInterval(interval);
+                    }
+                }, 300);
+            }
+            
+            function addTimelineCard(algorithm, description) {
+                const now = new Date();
+                const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                
+                // Add connection line if not the first card
+                if (timelineItems.children.length > 0) {
+                    const line = document.createElement('div');
+                    line.className = 'connection-line';
+                    timelineItems.appendChild(line);
+                }
+                
+               
+                
+                const card = document.createElement('div');
+                card.className = `timeline-card ${algorithm.toLowerCase()}-card`;
+                card.innerHTML = `
+                    <div class="card-header">
+                        <div class="card-title">${algorithm} Decapsulation</div>
+                        <div class="card-time">${timeString}</div>
+                    </div>
+                    <div class="card-desc">${description}</div>
+                `;
+                
+                timelineItems.appendChild(card);
+                
+                setTimeout(() => {
+                    card.classList.add('visible');
+                }, 10);
+                
+                // Scroll to bottom of timeline
+                timelinePanel.scrollTo({
+                    top: timelinePanel.scrollHeight,
+                    behavior: 'smooth'
+                });
+            }
+
+            function getAlgorithmDescription(algorithm, isDecryption = false) {
+                const encryptionDescriptions = {
+                    'Kyber': 'Quantum-resistant key encapsulation mechanism providing initial security',
+                    'Classic McEliece': 'Code-based key encapsulation for post-quantum security with strong theoretical foundations',
+                    'Falcon': 'Lattice-based digital signature algorithm with efficient verification',
+                    'NTRU': 'Lattice-based encryption scheme resistant to quantum attacks with high performance',
+                    'Dilithium': 'Emergency quantum-secure digital signature verified'
+                    
+                    
+                };
+                
+                const decryptionDescriptions = {
+                    'Kyber': 'Quantum-resistant key decapsulation completed successfully',
+                    'Classic McEliece': 'Code-based key decapsulation verified with strong theoretical guarantees',
+                    'Falcon': 'Lattice-based digital signature validated successfully',
+                    'NTRU': 'Lattice-based decryption completed with quantum-resistant properties',
+                    'Dilithium': 'Emergency quantum-secure digital signature verified'
+                };
+                
+                return isDecryption ? decryptionDescriptions[algorithm] : encryptionDescriptions[algorithm] || 'Advanced cryptographic algorithm';
+            }
+
+            // Start the process
+            startDecryptionProcess();
+        });
+    </script>
+</body>
+</html>

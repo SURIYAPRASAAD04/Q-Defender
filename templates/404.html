@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Deerhost Template">
+    <meta name="keywords" content="Deerhost, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/icon.png') }}">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>404 - Quantum Defense Triggered</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700,800,900&display=swap" rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/elegant-icons.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/flaticon.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.carousel.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/slicknav.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css">
+    <style>
+        .quantum-alert {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid #ff5555;
+            border-radius: 4px;
+            padding: 20px;
+            margin: 30px 0;
+            text-align: center;
+            animation: pulse-alert 2s infinite;
+        }
+        
+        @keyframes pulse-alert {
+            0% { box-shadow: 0 0 5px rgba(255, 85, 85, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(255, 85, 85, 0.8); }
+            100% { box-shadow: 0 0 5px rgba(255, 85, 85, 0.5); }
+        }
+        
+        .threat-analysis {
+            background: rgba(30, 30, 45, 0.8);
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 40px;
+        }
+        
+        .threat-metric {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        
+        .threat-level {
+            height: 10px;
+            background: linear-gradient(90deg, #00ff00, #ff0000);
+            margin-top: 5px;
+            position: relative;
+        }
+        
+        .threat-level:after {
+            content: '';
+            position: absolute;
+            right: 30%;
+            top: -5px;
+            width: 2px;
+            height: 20px;
+            background: white;
+        }
+        
+        .recommendation-box {
+            background: rgba(0, 100, 255, 0.2);
+            border-left: 4px solid #0064ff;
+            padding: 15px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Header Section Begin -->
+    <header class="header-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3">
+                    <div class="header__logo">
+                        <a href="/"><img src="{{ url_for('static', filename='img/logo-dark.png') }}" alt=""></a>
+                    </div>
+                </div>
+                <div class="col-lg-9 col-md-9">
+                    <nav class="header__menu">
+                        <ul>
+                            <b><li><a href="/">Secure</a></li>
+                            <li><a href="/about">About</a></li>
+                            <li><a href="/updates">Updates</a></li></b>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <div class="canvas__open">
+                <span class="fa fa-bars"></span>
+            </div>
+        </div>
+    </header>
+    <!-- Header End -->
+
+    <section class="quantum-hero">
+        <div class="quantum-grid"></div>
+        <div class="quantum-pulse"></div>
+        
+        <div class="container">
+            <div class="hero-content" style="text-align: center;">
+                <div class="title-group">
+                    <span class="quantum-badge">INTRUSION DETECTED</span>
+                    <h1 class="holographic-title">
+                        <span class="title-line">Quantum Defense</span>
+                        <span class="title-line">Protocol Activated</span>
+                    </h1>
+                    <div class="cyber-underline"></div>
+                </div>
+                
+                <div class="quantum-terminal" style="max-width: 800px; margin: 0 auto;">
+                    <div class="terminal-header">
+                        <div class="terminal-dots">
+                            <span class="dot red"></span>
+                            <span class="dot yellow"></span>
+                            <span class="dot green"></span>
+                        </div>
+                        <span class="terminal-title">THREAT ANALYSIS CONSOLE</span>
+                    </div>
+                    
+                    <div class="terminal-body">
+                        <div class="quantum-alert">
+                            <i class="fa fa-exclamation-triangle" style="font-size: 40px; color: #ff5555;"></i>
+                            <h2 style="color: #ff5555; margin: 15px 0;">404 - Quantum Path Not Found</h2>
+                            <p>The requested quantum tunnel does not exist or has been encrypted beyond standard decryption protocols.</p>
+                        </div>
+                        
+                        <div class="threat-analysis">
+                            <h3><i class="fa fa-shield"></i> Threat Analysis</h3>
+                            <div class="threat-metric">
+                                <span>Path Traversal Attempt</span>
+                                <span>High Probability</span>
+                            </div>
+                            <div class="threat-level"></div>
+                            
+                            <div class="threat-metric">
+                                <span>Quantum Signature Mismatch</span>
+                                <span>Detected</span>
+                            </div>
+                            
+                            <div class="threat-metric">
+                                <span>Zero Trust Verification</span>
+                                <span>Failed</span>
+                            </div>
+                            
+                            <div class="recommendation-box">
+                                <h4><i class="fa fa-lightbulb-o"></i> Recommended Action</h4>
+                                <p>Return to a secured quantum path or verify your access credentials. This incident has been logged with our quantum security systems.</p>
+                                <a href="/" class="quantum-button" style="display: inline-block; margin-top: 10px;">
+                                    <span class="button-text">Return to Safety</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="security-metrics" style="margin-top: 40px;">
+                    <div class="metric">
+                        <div class="metric-value" data-target="100">0</div>
+                        <div class="metric-label">Security Active</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value" data-target="0">0</div>
+                        <div class="metric-label">Breaches</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value" data-target="256">0</div>
+                        <div class="metric-label">Encryption Bits</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="quantum-orb"></div>
+        <div class="binary-rain"></div>
+    </section>
+
+    <!-- Footer Section Begin -->
+    <footer class="footer-section">
+        <div class="footer__text set-bg" data-setbg="{{ url_for('static', filename='img/footer-bg.png') }}">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 col-sm-12">
+                        <div class="footer__text-about">
+                            <div class="footer__logo">
+                                <a href="/"><img src="{{ url_for('static', filename='img/logo.png') }}" alt=""></a>
+                            </div>
+                            <p>Q-Defender enforces Zero Trust Security with multi-layer post-quantum encryption (Kyber, BIKE, Falcon, NTRU, Dilithium), protecting data from quantum threats. AI-powered anomaly detection ensures real-time monitoring, while multi-path data routing and decoy injection enhance security. Trust Nothing. Secure Everything.</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-sm-6">
+                        <div class="footer__text-widget">
+                            <h5>Features</h5>
+                            <ul>
+                                <li><a href="#">PQC Encryption</a></li>
+                                <li><a href="#">ML Threat Detection</a></li>
+                                <li><a href="#">Decoy Packet Injection</a></li>
+                                <li><a href="#">Adaptive Encryption</a></li>
+                                <li><a href="#">Secure Reconstruction</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-sm-6">
+                        <div class="footer__text-widget">
+                            <h5>Security</h5>
+                            <ul>
+                                <li><a href="#">Zero Trust Framework</a></li>
+                                <li><a href="#">High Data Protection</a></li>
+                                <li><a href="#">Self-Healing</a></li>
+                                <li><a href="#">Secure Fragmentation</a></li>
+                                <li><a href="#">Resistant Signatures</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer__text-copyright">
+                    <p>Copyright &copy; Nexus Innovators | Unisys Innovation Program 16, @ <a href="https://unisys.com" target="_blank">Unisys</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Footer Section End -->
+
+    <!-- Js Plugins -->
+    <script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.slicknav.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/owl.carousel.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+        // Animate metric counters
+        document.addEventListener('DOMContentLoaded', function() {
+            const metrics = document.querySelectorAll('.metric-value');
+            
+            const animateValue = (element, start, end, duration) => {
+                let startTimestamp = null;
+                const step = (timestamp) => {
+                    if (!startTimestamp) startTimestamp = timestamp;
+                    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                    const value = Math.floor(progress * (end - start) + start);
+                    element.textContent = end === 0 ? value : end % 1 === 0 ? value : value.toFixed(1);
+                    if (progress < 1) {
+                        window.requestAnimationFrame(step);
+                    }
+                };
+                window.requestAnimationFrame(step);
+            };
+            
+            metrics.forEach(metric => {
+                const target = parseFloat(metric.getAttribute('data-target'));
+                animateValue(metric, 0, target, 2000);
+            });
+        });
+    </script>
+</body>
+</html>

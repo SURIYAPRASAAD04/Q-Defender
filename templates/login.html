@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Q-Defender | Login</title>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/icon.png') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-green: #00E58E;
+            --secondary-teal: #007173;
+            --dark-teal: #003135;
+            --neon-blue: #00F0FF;
+            --dark-bg: #001A1C;
+            --light-bg: #00282A;
+            --quantum-purple: #00e58dd8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: white;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Quantum Web Animation */
+        .quantum-web {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .quantum-line {
+            position: absolute;
+            background: linear-gradient(90deg, transparent, var(--primary-green), transparent);
+            height: 1px;
+            width: 100%;
+            opacity: 0.3;
+            animation: web-line 15s infinite linear;
+        }
+
+        @keyframes web-line {
+            0% { transform: translateY(-100vh) rotate(0deg); }
+            100% { transform: translateY(100vh) rotate(360deg); }
+        }
+
+        /* Quantum Particle Grid */
+        .particle-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            display: grid;
+            grid-template-columns: repeat(20, 1fr);
+            grid-template-rows: repeat(20, 1fr);
+        }
+
+        .grid-particle {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .grid-particle::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 2px;
+            height: 2px;
+            background-color: var(--neon-blue);
+            border-radius: 50%;
+            opacity: 0;
+            transform: translate(-50%, -50%);
+            animation: particle-pulse 5s infinite;
+        }
+
+        @keyframes particle-pulse {
+            0%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 0.3; transform: translate(-50%, -50%) scale(3); }
+        }
+
+        /* Login Container */
+        .login-container {
+            background: rgba(0, 40, 42, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 0 40px rgba(0, 229, 142, 0.2);
+            border: 1px solid rgba(0, 229, 142, 0.2);
+            position: relative;
+            overflow: hidden;
+            z-index: 10;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 229, 142, 0.1) 0%, transparent 70%);
+            animation: rotate-glow 20s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes rotate-glow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .login-logo {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .login-logo img {
+            height: 160px;
+            filter: drop-shadow(0 0 10px rgba(0, 229, 142, 0.5));
+            animation: logo-pulse 4s infinite alternate;
+        }
+
+        @keyframes logo-pulse {
+            0% { filter: drop-shadow(0 0 10px rgba(0, 229, 142, 0.5)); }
+            100% { filter: drop-shadow(0 0 20px rgba(0, 229, 142, 0.8)); }
+        }
+
+        .login-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-title h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, var(--primary-green), var(--neon-blue));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .login-title p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        /* Quantum Auth Button */
+        .auth-btn-container {
+            position: relative;
+            margin: 30px 0;
+        }
+
+        .auth-btn {
+            width: 100%;
+            padding: 15px;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            border: none;
+            color: white;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .auth-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(0, 229, 142, 0.3);
+        }
+
+        .auth-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 229, 142, 0.2), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+            z-index: -1;
+        }
+
+        .auth-btn:hover::before {
+            transform: translateX(100%);
+        }
+
+        .auth-btn i {
+            font-size: 1.2rem;
+        }
+
+        .google-btn {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .google-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        /* Quantum Orb Animation */
+        .quantum-orb {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--quantum-purple), transparent 70%);
+            filter: blur(20px);
+            opacity: 0.3;
+            animation: orb-float 15s infinite alternate ease-in-out;
+            z-index: -1;
+        }
+
+        .orb-1 {
+            top: -50px;
+            left: -50px;
+            animation-delay: 0s;
+        }
+
+        .orb-2 {
+            bottom: -50px;
+            right: -50px;
+            animation-delay: -5s;
+        }
+
+        @keyframes orb-float {
+            0% { transform: translate(0, 0); }
+            25% { transform: translate(20px, 20px); }
+            50% { transform: translate(0, 40px); }
+            75% { transform: translate(-20px, 20px); }
+            100% { transform: translate(0, 0); }
+        }
+
+        /* Quantum Connection Lines */
+        .connection-line {
+            position: absolute;
+            background: linear-gradient(90deg, var(--primary-green), var(--neon-blue));
+            height: 1px;
+            width: 0;
+            opacity: 0.5;
+            transform-origin: left center;
+            animation: connect-line 2s forwards;
+        }
+
+        @keyframes connect-line {
+            0% { width: 0; opacity: 0; }
+            100% { width: 100px; opacity: 0.5; }
+        }
+
+        /* Responsive */
+        @media (max-width: 576px) {
+            .login-container {
+                padding: 30px 20px;
+                margin: 20px;
+            }
+            
+            .login-title h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Quantum Web Animation -->
+    <!-- <div class="quantum-web" id="quantum-web"></div> -->
+    
+    <!-- Quantum Particle Grid -->
+    <div class="particle-grid" id="particle-grid"></div>
+    
+    <!-- Quantum Orbs -->
+    <div class="quantum-orb orb-1"></div>
+    <div class="quantum-orb orb-2"></div>
+    
+    <!-- Connection Lines -->
+    <!-- <div class="connection-line" style="top: 20%; left: 10%; transform: rotate(30deg); animation-delay: 0.5s;"></div>
+    <div class="connection-line" style="top: 70%; right: 10%; transform: rotate(-20deg); animation-delay: 1s;"></div>
+    <div class="connection-line" style="bottom: 15%; left: 20%; transform: rotate(45deg); animation-delay: 1.5s;"></div>
+     -->
+    <!-- Login Container -->
+    <div class="login-container">
+        <div class="login-logo">
+            <img src="{{ url_for('static', filename='img/icon.png') }}" alt="Q-Defender">
+        </div>
+        
+        <div class="login-title">
+            <h1>Q-Defender</h1>
+            <p>Protect your data with post-quantum cryptography</p>
+        </div>
+
+        <a href="/login/google">
+        <div class="auth-btn-container">
+            <button class="auth-btn google-btn" id="google-auth-btn">
+                <i class="fab fa-google"></i>
+                <span>Continue with Google</span>
+            </button>
+        </div>
+        </a>
+        
+        <div class="quantum-verification">
+            <div class="verification-message">
+                <p style="text-align: center; color: rgba(255, 255, 255, 0.6); font-size: 0.8rem;">
+                    <i class="fas fa-shield-alt" style="color: var(--primary-green);"></i>
+                    Your data will be protected by quantum-resistant encryption
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create quantum web lines
+        function createQuantumWeb() {
+            const web = document.getElementById('quantum-web');
+            const lineCount = 20;
+            
+            for (let i = 0; i < lineCount; i++) {
+                const line = document.createElement('div');
+                line.classList.add('quantum-line');
+                
+                // Random properties
+                const angle = Math.random() * 360;
+                const duration = Math.random() * 10 + 10;
+                const delay = Math.random() * -20;
+                const width = Math.random() * 100 + 100;
+                
+                line.style.transform = `rotate(${angle}deg)`;
+                line.style.width = `${width}%`;
+                line.style.animationDuration = `${duration}s`;
+                line.style.animationDelay = `${delay}s`;
+                
+                // Random color variation
+                const hue = Math.random() * 60 + 140; // Green to blue range
+                line.style.background = `linear-gradient(90deg, transparent, hsl(${hue}, 100%, 70%), transparent)`;
+                
+                web.appendChild(line);
+            }
+        }
+        
+        // Create particle grid
+        function createParticleGrid() {
+            const grid = document.getElementById('particle-grid');
+            const particles = 400; // 20x20 grid
+            
+            for (let i = 0; i < particles; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('grid-particle');
+                
+                // Random animation delay
+                const delay = Math.random() * 5;
+                particle.style.animationDelay = `${delay}s`;
+                
+                grid.appendChild(particle);
+            }
+        }
+        
+        // Initialize animations
+        window.addEventListener('load', () => {
+            createQuantumWeb();
+            createParticleGrid();
+            
+            // Add ripple effect to auth button
+            const authBtn = document.getElementById('google-auth-btn');
+            authBtn.addEventListener('click', (e) => {
+                // Create ripple element
+                const ripple = document.createElement('span');
+                ripple.classList.add('ripple-effect');
+                
+                // Position ripple
+                const rect = authBtn.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size/2;
+                const y = e.clientY - rect.top - size/2;
+                
+                // Style ripple
+                ripple.style.width = ripple.style.height = `${size}px`;
+                ripple.style.left = `${x}px`;
+                ripple.style.top = `${y}px`;
+                ripple.style.background = `radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%)`;
+                ripple.style.position = 'absolute';
+                ripple.style.borderRadius = '50%';
+                ripple.style.transform = 'scale(0)';
+                ripple.style.animation = 'ripple 0.6s linear';
+                ripple.style.pointerEvents = 'none';
+                
+                // Add to button
+                authBtn.appendChild(ripple);
+                
+                // Remove after animation
+                setTimeout(() => {
+                    ripple.remove();
+                    // Here you would normally redirect to Google OAuth
+                    // window.location.href = '/auth/google';
+                }, 600);
+            });
+            
+            // Add style for ripple animation
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes ripple {
+                    to { transform: scale(4); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+        });
+        
+        // Parallax effect on mouse move
+        document.addEventListener('mousemove', (e) => {
+            const container = document.querySelector('.login-container');
+            const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+            const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+            container.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+        });
+        
+        // Reset container position when mouse leaves
+        document.querySelector('.login-container').addEventListener('mouseleave', () => {
+            const container = document.querySelector('.login-container');
+            container.style.transform = 'rotateY(0deg) rotateX(0deg)';
+        });
+    </script>
+</body>
+
+</html>

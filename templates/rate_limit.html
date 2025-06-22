@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Deerhost Template">
+    <meta name="keywords" content="Deerhost, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/icon.png') }}">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Rate Limit Exceeded - Q-Defender</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700,800,900&display=swap" rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/elegant-icons.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/flaticon.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.carousel.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/slicknav.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css">
+    <style>
+        .rate-limit-alert {
+            background: rgba(255, 165, 0, 0.1);
+            border: 1px solid #ffaa33;
+            border-radius: 4px;
+            padding: 20px;
+            margin: 30px 0;
+            text-align: center;
+            animation: pulse-rate-limit 2s infinite;
+        }
+        
+        @keyframes pulse-rate-limit {
+            0% { box-shadow: 0 0 5px rgba(255, 170, 51, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(255, 170, 51, 0.8); }
+            100% { box-shadow: 0 0 5px rgba(255, 170, 51, 0.5); }
+        }
+        
+        .cool-down-meter {
+            width: 100%;
+            height: 20px;
+            background: rgba(50, 50, 70, 0.5);
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .cool-down-progress {
+            height: 100%;
+            width: 0;
+            background: linear-gradient(90deg, #ff5555, #ffaa33);
+            border-radius: 10px;
+            transition: width 1s linear;
+        }
+        
+        .cool-down-text {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            line-height: 20px;
+            color: white;
+            font-weight: bold;
+            text-shadow: 0 0 5px black;
+        }
+        
+        .security-tip {
+            background: rgba(0, 100, 255, 0.2);
+            border-left: 4px solid #0064ff;
+            padding: 15px;
+            margin-top: 20px;
+            text-align: left;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Header Section Begin -->
+    <header class="header-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3">
+                    <div class="header__logo">
+                        <a href="/"><img src="{{ url_for('static', filename='img/logo-dark.png') }}" alt=""></a>
+                    </div>
+                </div>
+                <div class="col-lg-9 col-md-9">
+                    <nav class="header__menu">
+                        <ul>
+                            <b><li><a href="/">Secure</a></li>
+                            <li><a href="/about">About</a></li>
+                            <li><a href="/updates">Updates</a></li></b>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <div class="canvas__open">
+                <span class="fa fa-bars"></span>
+            </div>
+        </div>
+    </header>
+    <!-- Header End -->
+
+    <section class="quantum-hero">
+        <div class="quantum-grid"></div>
+        <div class="quantum-pulse"></div>
+        
+        <div class="container">
+            <div class="hero-content" style="text-align: center;">
+                <div class="title-group">
+                    <span class="quantum-badge">SECURITY THROTTLE ACTIVATED</span>
+                    <h1 class="holographic-title">
+                        <span class="title-line">Quantum Rate Limit</span>
+                        <span class="title-line">Defense Engaged</span>
+                    </h1>
+                    <div class="cyber-underline"></div>
+                </div>
+                
+                <div class="quantum-terminal" style="max-width: 800px; margin: 0 auto;">
+                    <div class="terminal-header">
+                        <div class="terminal-dots">
+                            <span class="dot red"></span>
+                            <span class="dot yellow"></span>
+                            <span class="dot green"></span>
+                        </div>
+                        <span class="terminal-title">RATE LIMIT CONSOLE</span>
+                    </div>
+                    
+                    <div class="terminal-body">
+                        <div class="rate-limit-alert">
+                            <i class="fa fa-tachometer" style="font-size: 40px; color: #ffaa33;"></i>
+                            <h2 style="color: #ffaa33; margin: 15px 0;">Request Frequency Exceeded</h2>
+                            <p>Quantum security protocols have detected excessive request activity from your quantum tunnel.</p>
+                        </div>
+                        
+                        <div class="cool-down-meter">
+                            <div class="cool-down-progress" id="coolDownProgress"></div>
+                            <div class="cool-down-text" id="coolDownText">Cool Down: 60 seconds remaining</div>
+                        </div>
+                        
+                        <div class="security-tip">
+                            <h4 style="color: aliceblue;"><i style="color: aquamarine;" class="fa fa-info-circle"></i> Security Protocol Information</h4>
+                            <p style="color: aliceblue;">Our quantum defense systems automatically throttle requests that exceed secure thresholds to prevent brute-force attacks and system overload. This is a standard security measure.<br> Defense level: Anti-DDoS Protection</p>
+                        
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="security-metrics" style="margin-top: 40px;">
+                    <div class="metric">
+                        <div class="metric-value" data-target="100">0</div>
+                        <div class="metric-label">Protection Active</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value" data-target="0">0</div>
+                        <div class="metric-label">Requests Allowed</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value" data-target="10">0</div>
+                        <div class="metric-label">Threshold</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="quantum-orb"></div>
+        <div class="binary-rain"></div>
+    </section>
+
+    <!-- Footer Section Begin -->
+    <footer class="footer-section">
+        <div class="footer__text set-bg" data-setbg="{{ url_for('static', filename='img/footer-bg.png') }}">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 col-sm-12">
+                        <div class="footer__text-about">
+                            <div class="footer__logo">
+                                <a href="/"><img src="{{ url_for('static', filename='img/logo.png') }}" alt=""></a>
+                            </div>
+                            <p>Q-Defender enforces Zero Trust Security with multi-layer post-quantum encryption (Kyber, BIKE, Falcon, NTRU, Dilithium), protecting data from quantum threats. AI-powered anomaly detection ensures real-time monitoring, while multi-path data routing and decoy injection enhance security. Trust Nothing. Secure Everything.</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-sm-6">
+                        <div class="footer__text-widget">
+                            <h5>Features</h5>
+                            <ul>
+                                <li><a href="#">PQC Encryption</a></li>
+                                <li><a href="#">ML Threat Detection</a></li>
+                                <li><a href="#">Decoy Packet Injection</a></li>
+                                <li><a href="#">Adaptive Encryption</a></li>
+                                <li><a href="#">Secure Reconstruction</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-sm-6">
+                        <div class="footer__text-widget">
+                            <h5>Security</h5>
+                            <ul>
+                                <li><a href="#">Zero Trust Framework</a></li>
+                                <li><a href="#">High Data Protection</a></li>
+                                <li><a href="#">Self-Healing</a></li>
+                                <li><a href="#">Secure Fragmentation</a></li>
+                                <li><a href="#">Resistant Signatures</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer__text-copyright">
+                    <p>Copyright &copy; Nexus Innovators | Unisys Innovation Program 16, @ <a href="https://unisys.com" target="_blank">Unisys</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Footer Section End -->
+
+    <!-- Js Plugins -->
+    <script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.slicknav.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/owl.carousel.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+        // Animate metric counters
+        document.addEventListener('DOMContentLoaded', function() {
+            const metrics = document.querySelectorAll('.metric-value');
+            
+            const animateValue = (element, start, end, duration) => {
+                let startTimestamp = null;
+                const step = (timestamp) => {
+                    if (!startTimestamp) startTimestamp = timestamp;
+                    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                    const value = Math.floor(progress * (end - start) + start);
+                    element.textContent = end === 0 ? value : end % 1 === 0 ? value : value.toFixed(1);
+                    if (progress < 1) {
+                        window.requestAnimationFrame(step);
+                    }
+                };
+                window.requestAnimationFrame(step);
+            };
+            
+            metrics.forEach(metric => {
+                const target = parseFloat(metric.getAttribute('data-target'));
+                animateValue(metric, 0, target, 2000);
+            });
+            
+            // Cool down timer animation
+            let timeLeft = 60;
+            const coolDownProgress = document.getElementById('coolDownProgress');
+            const coolDownText = document.getElementById('coolDownText');
+            
+            const updateCoolDown = () => {
+                const percentage = (timeLeft / 60) * 100;
+                coolDownProgress.style.width = percentage + '%';
+                coolDownText.textContent = 'Cool Down: ' + timeLeft + ' seconds remaining';
+                
+                if (timeLeft <= 0) {
+                    coolDownText.textContent = 'Access restored - You may now proceed';
+                    coolDownProgress.style.background = '#00aa00';
+                } else {
+                    timeLeft--;
+                    setTimeout(updateCoolDown, 1000);
+                }
+            };
+            
+            updateCoolDown();
+        });
+    </script>
+</body>
+</html>
